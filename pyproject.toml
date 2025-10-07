@@ -1,0 +1,13 @@
+[project]
+name = "stream2prompt"
+version = "0.1.0"
+description = "ISDN3002 Demo"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "label-studio>=1.21.0",
+    "opencv-python>=4.11.0.86",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "ultralytics>=8.3.205",
+]

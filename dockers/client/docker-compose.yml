@@ -1,0 +1,23 @@
+name: Stream2Port
+
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:1.15.1-ffmpeg-rpi
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: "2G"
+    ports:
+      - "8889:8889"   # WebRTC
+    networks:
+      internal:
+        ipv4_address: 192.168.56.2
+
+networks:
+  internal:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.56.0/24"

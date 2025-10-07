@@ -1,0 +1,10 @@
+path: /home/xnorspx/Projects/Stream2Prompt/model-lab/dataset # Absolute path
+train: images/train
+val: images/val
+test: images/test
+
+nc: 3  # Number of classes
+names: # Class names
+  - 'The Progress of a Soul: The Victory, Phoebe Anna Traquair 1902'
+  - 'The Execution of Lady Jane Grey, Paul Delaroche 1833'
+  - 'Café Terrace at Night, Vincent van Gogh 1888'
