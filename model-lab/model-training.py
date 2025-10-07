@@ -13,9 +13,5 @@ train_results = model.train(
 # Evaluate model performance on the validation set
 metrics = model.val()
 
-# Perform object detection on an image
-results = model("/home/xnorspx/Projects/Stream2Prompt/model-lab/dataset/images/test/20250823_180435(0).jpg")
-results[0].show()
-
 # Export the model to ONNX format
 path = model.export(format="engine", half=True, dynamic=True, device=0)  # return path to exported model

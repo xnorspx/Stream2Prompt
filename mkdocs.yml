@@ -1,0 +1,7 @@
+site_name: Stream2Prompt
+
+nav:
+  - Home: index.md
+  - Model Lab:
+    - Environment Setup: Model-Lab/Environment-Setup.md
+    - Usage: Model-Lab/Usage.md

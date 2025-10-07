@@ -10,7 +10,7 @@ class YOLODetectionGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("YOLO11 Object Detection")
-        self.root.geometry("1000x700")
+        self.root.geometry("1280x720")
         
         # Initialize model
         self.model = None
