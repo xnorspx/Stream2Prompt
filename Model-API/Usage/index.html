@@ -141,6 +141,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-bs-level="2"><a href="#webcam-client" class="nav-link">Webcam Client</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -354,7 +358,176 @@ setTimeout(() =&gt; {
 <li><strong>Port conflicts</strong>: Change the default port if 8000 is in use</li>
 </ol>
 <h3 id="debug-information">Debug Information:</h3>
-<p>Check the server logs for detailed error messages and processing information.</p></div>
+<p>Check the server logs for detailed error messages and processing information.</p>
+<h2 id="webcam-client">Webcam Client</h2>
+<p>The project includes a lightweight Python client (<code>webcam_client.py</code>) for real-time webcam streaming to the Model API.</p>
+<h3 id="features_1">Features</h3>
+<ul>
+<li><strong>Lightweight Design</strong>: Minimal resource usage with no GUI overhead</li>
+<li><strong>Configurable FPS</strong>: Adjustable frame rate for API requests</li>
+<li><strong>Flexible Input</strong>: Supports webcam or video file input</li>
+<li><strong>Progress Monitoring</strong>: Real-time statistics and progress updates</li>
+<li><strong>Error Handling</strong>: Robust network error handling and recovery</li>
+</ul>
+<h3 id="installation-requirements">Installation Requirements</h3>
+<p>The webcam client requires additional dependencies:</p>
+<pre><code class="language-bash">pip install opencv-python requests
+</code></pre>
+<h3 id="basic-usage">Basic Usage</h3>
+<h4 id="default-configuration-10-fps-camera-0-localhost8000">Default Configuration (10 FPS, camera 0, localhost:8000):</h4>
+<pre><code class="language-bash">python webcam_client.py
+</code></pre>
+<h4 id="custom-frame-rate">Custom Frame Rate:</h4>
+<pre><code class="language-bash">python webcam_client.py --fps 15
+</code></pre>
+<h4 id="different-api-endpoint">Different API Endpoint:</h4>
+<pre><code class="language-bash">python webcam_client.py --endpoint http://192.168.1.100:8000
+</code></pre>
+<h4 id="different-camera">Different Camera:</h4>
+<pre><code class="language-bash">python webcam_client.py --input 1  # Camera index 1
+</code></pre>
+<h4 id="video-file-input">Video File Input:</h4>
+<pre><code class="language-bash">python webcam_client.py --input /path/to/video.mp4
+</code></pre>
+<h4 id="combined-options">Combined Options:</h4>
+<pre><code class="language-bash">python webcam_client.py --fps 20 --endpoint http://remote-server:8000 --input 1
+</code></pre>
+<h3 id="command-line-options">Command Line Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--fps</code></td>
+<td>Frames per second to send to API</td>
+<td>10</td>
+</tr>
+<tr>
+<td><code>--endpoint</code></td>
+<td>Model API endpoint URL</td>
+<td><code>http://localhost:8000</code></td>
+</tr>
+<tr>
+<td><code>--input</code></td>
+<td>Input source: camera index or video file path</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration">Configuration</h3>
+<p>You can modify the default settings by editing the configuration section at the top of <code>webcam_client.py</code>:</p>
+<pre><code class="language-python"># Default configuration - modify these values as needed
+DEFAULT_FPS = 10                                    # Frames per second to send to API
+DEFAULT_ENDPOINT = &quot;http://localhost:8000&quot;          # Model API endpoint
+DEFAULT_INPUT_SOURCE = 0                            # Webcam index (0 = default camera)
+
+# Network configuration
+REQUEST_TIMEOUT = 5.0                               # Timeout for API requests (seconds)
+
+# Video configuration
+JPEG_QUALITY = 80                                   # JPEG compression quality (1-100)
+</code></pre>
+<h3 id="usage-workflow_1">Usage Workflow</h3>
+<ol>
+<li><strong>Start the Model API server</strong> (see above section)</li>
+<li><strong>Connect your webcam</strong> or prepare your video file</li>
+<li><strong>Run the webcam client</strong> with desired settings</li>
+<li><strong>Monitor progress</strong> through console output</li>
+<li><strong>Stop with Ctrl+C</strong> when finished</li>
+</ol>
+<h3 id="example-output">Example Output</h3>
+<pre><code>Stream2Prompt Webcam Client (Lightweight)
+==================================================
+FPS: 10
+Endpoint: http://localhost:8000
+Input Source: 0
+==================================================
+✓ API connection successful
+Capturing from source 0 at 10 FPS
+Sending frames to http://localhost:8000/predict/
+Press Ctrl+C to stop
+Sent 50 frames in 5.1s (avg 9.8 FPS)
+Sent 100 frames in 10.2s (avg 9.8 FPS)
+^C
+Stopped by user
+
+Statistics:
+  Frames captured: 123
+  Frames sent successfully: 120
+  Success rate: 97.6%
+  Average send rate: 9.8 FPS
+  Duration: 12.3 seconds
+</code></pre>
+<h3 id="performance-considerations_1">Performance Considerations</h3>
+<ul>
+<li><strong>Frame Rate</strong>: Higher FPS increases network traffic and API load</li>
+<li><strong>Network Latency</strong>: Remote endpoints may affect achievable frame rates</li>
+<li><strong>Image Quality</strong>: JPEG quality setting affects file size and upload speed</li>
+<li><strong>Camera Resolution</strong>: Higher resolution increases processing time and bandwidth</li>
+</ul>
+<h3 id="troubleshooting_1">Troubleshooting</h3>
+<h4 id="common-issues_1">Common Issues:</h4>
+<ol>
+<li><strong>Camera not found</strong>: </li>
+<li>Check camera index (try different values: 0, 1, 2...)</li>
+<li>
+<p>Ensure camera is not used by another application</p>
+</li>
+<li>
+<p><strong>Low frame rate</strong>:</p>
+</li>
+<li>Check network connection to API endpoint</li>
+<li>Reduce FPS setting or JPEG quality</li>
+<li>
+<p>Ensure API server has sufficient resources</p>
+</li>
+<li>
+<p><strong>Connection errors</strong>:</p>
+</li>
+<li>Verify API server is running and accessible</li>
+<li>Check firewall settings if using remote endpoint</li>
+<li>
+<p>Ensure correct endpoint URL format</p>
+</li>
+<li>
+<p><strong>Import errors</strong>:</p>
+</li>
+<li>Install required dependencies: <code>pip install opencv-python requests</code></li>
+</ol>
+<h3 id="integration-examples">Integration Examples</h3>
+<h4 id="continuous-monitoring-script">Continuous Monitoring Script:</h4>
+<pre><code class="language-python">import subprocess
+import time
+
+while True:
+    try:
+        # Run webcam client
+        subprocess.run([
+            'python', 'webcam_client.py', 
+            '--fps', '15',
+            '--endpoint', 'http://your-api-server:8000'
+        ])
+    except KeyboardInterrupt:
+        break
+    except Exception as e:
+        print(f&quot;Client crashed: {e}&quot;)
+        time.sleep(5)  # Wait before restart
+</code></pre>
+<h4 id="batch-processing-multiple-cameras">Batch Processing Multiple Cameras:</h4>
+<pre><code class="language-bash"># Terminal 1 - Camera 0
+python webcam_client.py --input 0 --fps 10
+
+# Terminal 2 - Camera 1  
+python webcam_client.py --input 1 --fps 10
+
+# Terminal 3 - Video file
+python webcam_client.py --input security_footage.mp4 --fps 30
+</code></pre></div>
             </div>
         </div>
 
