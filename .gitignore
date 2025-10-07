@@ -1,2 +1,5 @@
 # Python Virtual Environment
 .venv/
+
+# mkdocs documentation
+site/
