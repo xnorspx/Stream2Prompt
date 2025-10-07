@@ -241,3 +241,176 @@ The API handles various edge cases:
 
 ### Debug Information:
 Check the server logs for detailed error messages and processing information.
+
+## Webcam Client
+
+The project includes a lightweight Python client (`webcam_client.py`) for real-time webcam streaming to the Model API.
+
+### Features
+
+- **Lightweight Design**: Minimal resource usage with no GUI overhead
+- **Configurable FPS**: Adjustable frame rate for API requests
+- **Flexible Input**: Supports webcam or video file input
+- **Progress Monitoring**: Real-time statistics and progress updates
+- **Error Handling**: Robust network error handling and recovery
+
+### Installation Requirements
+
+The webcam client requires additional dependencies:
+
+```bash
+pip install opencv-python requests
+```
+
+### Basic Usage
+
+#### Default Configuration (10 FPS, camera 0, localhost:8000):
+```bash
+python webcam_client.py
+```
+
+#### Custom Frame Rate:
+```bash
+python webcam_client.py --fps 15
+```
+
+#### Different API Endpoint:
+```bash
+python webcam_client.py --endpoint http://192.168.1.100:8000
+```
+
+#### Different Camera:
+```bash
+python webcam_client.py --input 1  # Camera index 1
+```
+
+#### Video File Input:
+```bash
+python webcam_client.py --input /path/to/video.mp4
+```
+
+#### Combined Options:
+```bash
+python webcam_client.py --fps 20 --endpoint http://remote-server:8000 --input 1
+```
+
+### Command Line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--fps` | Frames per second to send to API | 10 |
+| `--endpoint` | Model API endpoint URL | `http://localhost:8000` |
+| `--input` | Input source: camera index or video file path | 0 |
+
+### Configuration
+
+You can modify the default settings by editing the configuration section at the top of `webcam_client.py`:
+
+```python
+# Default configuration - modify these values as needed
+DEFAULT_FPS = 10                                    # Frames per second to send to API
+DEFAULT_ENDPOINT = "http://localhost:8000"          # Model API endpoint
+DEFAULT_INPUT_SOURCE = 0                            # Webcam index (0 = default camera)
+
+# Network configuration
+REQUEST_TIMEOUT = 5.0                               # Timeout for API requests (seconds)
+
+# Video configuration
+JPEG_QUALITY = 80                                   # JPEG compression quality (1-100)
+```
+
+### Usage Workflow
+
+1. **Start the Model API server** (see above section)
+2. **Connect your webcam** or prepare your video file
+3. **Run the webcam client** with desired settings
+4. **Monitor progress** through console output
+5. **Stop with Ctrl+C** when finished
+
+### Example Output
+
+```
+Stream2Prompt Webcam Client (Lightweight)
+==================================================
+FPS: 10
+Endpoint: http://localhost:8000
+Input Source: 0
+==================================================
+✓ API connection successful
+Capturing from source 0 at 10 FPS
+Sending frames to http://localhost:8000/predict/
+Press Ctrl+C to stop
+Sent 50 frames in 5.1s (avg 9.8 FPS)
+Sent 100 frames in 10.2s (avg 9.8 FPS)
+^C
+Stopped by user
+
+Statistics:
+  Frames captured: 123
+  Frames sent successfully: 120
+  Success rate: 97.6%
+  Average send rate: 9.8 FPS
+  Duration: 12.3 seconds
+```
+
+### Performance Considerations
+
+- **Frame Rate**: Higher FPS increases network traffic and API load
+- **Network Latency**: Remote endpoints may affect achievable frame rates
+- **Image Quality**: JPEG quality setting affects file size and upload speed
+- **Camera Resolution**: Higher resolution increases processing time and bandwidth
+
+### Troubleshooting
+
+#### Common Issues:
+
+1. **Camera not found**: 
+   - Check camera index (try different values: 0, 1, 2...)
+   - Ensure camera is not used by another application
+   
+2. **Low frame rate**:
+   - Check network connection to API endpoint
+   - Reduce FPS setting or JPEG quality
+   - Ensure API server has sufficient resources
+
+3. **Connection errors**:
+   - Verify API server is running and accessible
+   - Check firewall settings if using remote endpoint
+   - Ensure correct endpoint URL format
+
+4. **Import errors**:
+   - Install required dependencies: `pip install opencv-python requests`
+
+### Integration Examples
+
+#### Continuous Monitoring Script:
+```python
+import subprocess
+import time
+
+while True:
+    try:
+        # Run webcam client
+        subprocess.run([
+            'python', 'webcam_client.py', 
+            '--fps', '15',
+            '--endpoint', 'http://your-api-server:8000'
+        ])
+    except KeyboardInterrupt:
+        break
+    except Exception as e:
+        print(f"Client crashed: {e}")
+        time.sleep(5)  # Wait before restart
+```
+
+#### Batch Processing Multiple Cameras:
+```bash
+# Terminal 1 - Camera 0
+python webcam_client.py --input 0 --fps 10
+
+# Terminal 2 - Camera 1  
+python webcam_client.py --input 1 --fps 10
+
+# Terminal 3 - Video file
+python webcam_client.py --input security_footage.mp4 --fps 30
+```

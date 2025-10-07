@@ -15,4 +15,5 @@ dependencies = [
     "pillow>=10.0.0",
     "tensorrt-cu12>=10.13.3.9",
     "python-multipart>=0.0.20",
+    "requests>=2.32.5",
 ]
