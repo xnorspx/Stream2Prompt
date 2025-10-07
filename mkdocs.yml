@@ -5,5 +5,6 @@ nav:
   - Model Lab:
     - Environment Setup: Model-Lab/Environment-Setup.md
     - Usage: Model-Lab/Usage.md
-  - Raspi:
-    - Usage: Raspi/Usage.md
+  - Model-API:
+    - Environment Setup: Model-API/Environment-Setup.md
+    - Usage: Model-API/Usage.md
